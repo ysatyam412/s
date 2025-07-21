@@ -402,7 +402,6 @@ async def txt_handler(bot: Client, m: Message):
         links = [i for i in content.split("\n") if "youtube.com" in i or "youtu.be" in i]
         count = 1
         arg = 1
-        len(links) = 1
         if not links:
             await m.reply_text("**No valid YouTube links found.**")
             return
