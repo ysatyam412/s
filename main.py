@@ -404,12 +404,12 @@ async def txt_handler(bot: Client, m: Message):
     elif input.text:
         content = input.text.strip()
         content = content.split("\n")
-            links = []
-            for i in content:
-                links.append(i.split("://", 1))
+        links = []
+        for i in content:
+            links.append(i.split("://", 1))
         count = 1
         arg = 1
-        
+    
     else:
         await m.reply_text("**Invalid input. Send either a .txt file or YouTube links**")
         return
