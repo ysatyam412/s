@@ -387,7 +387,7 @@ async def txt_handler(bot: Client, m: Message):
         return
 
   
-    await editable.edit(f"🔹**ᴛᴏᴛᴀʟ 🔗 ʟɪɴᴋs ғᴏᴜɴᴅ ᴀʀᴇ --__{len(links)}__--\n🔹sᴇɴᴅ ғʀᴏᴍ ᴡʜᴇʀᴇ ʏᴏᴜ ᴡᴀɴᴛ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅ**")
+    await editable.edit(f"**•ᴛᴏᴛᴀʟ 🔗 ʟɪɴᴋs ғᴏᴜɴᴅ ᴀʀᴇ --__{len(links)}__--\n•sᴇɴᴅ ғʀᴏᴍ ᴡʜᴇʀᴇ ʏᴏᴜ ᴡᴀɴᴛ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅ**")
     try:
         input0: Message = await bot.listen(editable.chat.id, timeout=10)
         raw_text = input0.text
@@ -409,8 +409,13 @@ async def txt_handler(bot: Client, m: Message):
             Vxy = links[i][1].replace("www.youtube-nocookie.com/embed", "youtu.be")
             url = "https://" + Vxy
 
-            name1 = links[i][0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("https", "")
-            name = f'{name1[:60]} {CREDIT}'
+            oembed_url = f"https://www.youtube.com/oembed?url={url}&format=json"
+            response = requests.get(oembed_url)
+            audio_title = response.json().get('title', 'YouTube Video')
+            name = f'{audio_title[:60]} {CREDIT}'        
+        
+            #name1 = links[i][0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("https", "")
+            #name = f'{name1[:60]} {CREDIT}'
 
             if "youtube.com" in url or "youtu.be" in url:
                 prog = await m.reply_text(f"<i><b>Audio Downloading</b></i>\n<blockquote><b>{str(count).zfill(3)}) {name1}</b></blockquote>")
