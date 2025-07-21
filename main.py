@@ -378,6 +378,7 @@ async def txt_handler(bot: Client, m: Message):
             links.append(i.split("://", 1))
         count = 1
         arg = 1
+        await editable.delete()
         await input.delete(True)
     else:
         await m.reply_text("**Invalid input. Send either a .txt file or YouTube links set**")
