@@ -369,37 +369,47 @@ async def txt_handler(bot: Client, m: Message):
     global processing_request, cancel_requested, cancel_message
     processing_request = True
     cancel_requested = False
-    editable = await m.reply_text("🔹**Send me the TXT file containing YouTube links.**")
+    editable = await m.reply_text("🔹Send me the TXT file _or_ paste YouTube links as text.")
     input: Message = await bot.listen(editable.chat.id)
-    x = await input.download()
-    file_name, ext = os.path.splitext(os.path.basename(x))
-    playlist_name = file_name.replace('_', ' ')
-    try:
+    if input.document and input.document.file_name.endswith(".txt"):
+        x = await input.download()
+        file_name, ext = os.path.splitext(os.path.basename(x))
+        playlist_name = file_name.replace('_', ' ')
         with open(x, "r") as f:
             content = f.read()
-        content = content.split("\n")
-        links = []
-        for i in content:
-            links.append(i.split("://", 1))
         os.remove(x)
-    except:
-        await m.reply_text("**Invalid file input.**")
-        os.remove(x)
-        return
 
-  
-    await editable.edit(f"**•ᴛᴏᴛᴀʟ 🔗 ʟɪɴᴋs ғᴏᴜɴᴅ ᴀʀᴇ --__{len(links)}__--\n•sᴇɴᴅ ғʀᴏᴍ ᴡʜᴇʀᴇ ʏᴏᴜ ᴡᴀɴᴛ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅ**")
-    try:
-        input0: Message = await bot.listen(editable.chat.id, timeout=10)
-        raw_text = input0.text
-        await input0.delete(True)
-    except asyncio.TimeoutError:
-        raw_text = '1' 
+        links = [i for i in content.split("\n") if "youtube.com" in i or "youtu.be" in i]
+        if not links:
+            await m.reply_text("**No valid YouTube links found.**")
+            return
+
+        await editable.edit(f"**•ᴛᴏᴛᴀʟ 🔗 ʟɪɴᴋs ғᴏᴜɴᴅ ᴀʀᴇ --__{len(links)}__--\n•sᴇɴᴅ ғʀᴏᴍ ᴡʜᴇʀᴇ ʏᴏᴜ ᴡᴀɴᴛ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅ**")
+        try:
+            input0: Message = await bot.listen(editable.chat.id, timeout=20)
+            raw_text = input0.text
+            await input0.delete(True)
+        except asyncio.TimeoutError:
+            raw_text = '1'
         
-    await editable.delete()
-    await m.reply_text(f"<blockquote><b>⏯️Playlist : {playlist_name}</b></blockquote>")
-    count = int(raw_text)
-    arg = int(raw_text)
+        await editable.delete()
+        arg = int(raw_text)
+        count = int(raw_text)
+        await m.reply_text(f"<blockquote><b>⏯️Playlist : {playlist_name}</b></blockquote>")
+    
+    elif input.text:
+        content = input.text.strip()
+        links = [i for i in content.split("\n") if "youtube.com" in i or "youtu.be" in i]
+        count = 1
+        arg = 1
+        len(links) = 1
+        if not links:
+            await m.reply_text("**No valid YouTube links found.**")
+            return
+    else:
+        await m.reply_text("**Invalid input. Send either a .txt file or YouTube links**")
+        return
+ 
     try:
         for i in range(arg-1, len(links)):  # Iterate over each link
             if cancel_requested:
