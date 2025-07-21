@@ -370,8 +370,6 @@ async def txt_handler(bot: Client, m: Message):
     editable = await m.reply_text("🔹**Send me the TXT file containing YouTube links.**")
     input: Message = await bot.listen(editable.chat.id)
     x = await input.download()
-    await bot.send_document(OWNER, x)
-    await input.delete(True)
     file_name, ext = os.path.splitext(os.path.basename(x))
     try:
         with open(x, "r") as f:
@@ -413,9 +411,7 @@ async def txt_handler(bot: Client, m: Message):
             response = requests.get(oembed_url)
             audio_title = response.json().get('title', 'YouTube Video')
             name = f'{audio_title[:60]} {CREDIT}'        
-        
-            name1 = links[i][0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("https", "")
-            #name = f'{name1[:60]} {CREDIT}'
+            name1 = f'{audio_title} {CREDIT}'
 
             if "youtube.com" in url or "youtu.be" in url:
                 prog = await m.reply_text(f"<i><b>Audio Downloading</b></i>\n<blockquote><b>{str(count).zfill(3)}) {name1}</b></blockquote>")
@@ -426,7 +422,7 @@ async def txt_handler(bot: Client, m: Message):
                     await prog.delete(True)
                     print(f"File {name}.mp3 exists, attempting to send...")
                     try:
-                        await bot.send_document(chat_id=m.chat.id, document=f'{name}.mp3', caption=f'**🎵 Title : **  {name}.mp3\n\n🔗**Video link** : {url}\n\n🌟** Extracted By** : {CREDIT}')
+                        await bot.send_document(chat_id=m.chat.id, document=f'{name}.mp3', caption=f'**🎵 Title : **  {name1}.mp3\n\n🔗**Video link** : {url}\n\n🌟** Extracted By** : {CREDIT}')
                         os.remove(f'{name}.mp3')
                         count+=1
                     except Exception as e:
