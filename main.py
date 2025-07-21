@@ -394,7 +394,7 @@ async def txt_handler(bot: Client, m: Message):
         raw_text = '1' 
         
     await editable.delete()      
-    await m.reply_text(f"<blockquote><b>{file_name}</b></blockquote>")
+    await m.reply_text(f"<blockquote><b>⏯️Playlist : {file_name}</b></blockquote>")
     count = int(raw_text)
     arg = int(raw_text)
     try:
@@ -410,6 +410,7 @@ async def txt_handler(bot: Client, m: Message):
             oembed_url = f"https://www.youtube.com/oembed?url={url}&format=json"
             response = requests.get(oembed_url)
             audio_title = response.json().get('title', 'YouTube Video')
+            audio_title = audio_title.replace("_", " ")
             name = f'{audio_title[:60]} {CREDIT}'        
             name1 = f'{audio_title} {CREDIT}'
 
