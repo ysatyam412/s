@@ -375,14 +375,18 @@ async def txt_handler(bot: Client, m: Message):
         x = await input.download()
         file_name, ext = os.path.splitext(os.path.basename(x))
         playlist_name = file_name.replace('_', ' ')
-        with open(x, "r") as f:
-            content = f.read()
-        os.remove(x)
-
-        links = [i for i in content.split("\n") if "youtube.com" in i or "youtu.be" in i]
-        if not links:
-            await m.reply_text("**No valid YouTube links found.**")
-            return
+        try:
+            with open(x, "r") as f:
+                content = f.read()
+            content = content.split("\n")
+            links = []
+            for i in content:
+                links.append(i.split("://", 1))
+            os.remove(x)
+        except:
+             await m.reply_text("**Invalid file input.**")
+             os.remove(x)
+             return
 
         await editable.edit(f"**•ᴛᴏᴛᴀʟ 🔗 ʟɪɴᴋs ғᴏᴜɴᴅ ᴀʀᴇ --__{len(links)}__--\n•sᴇɴᴅ ғʀᴏᴍ ᴡʜᴇʀᴇ ʏᴏᴜ ᴡᴀɴᴛ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅ**")
         try:
@@ -399,12 +403,13 @@ async def txt_handler(bot: Client, m: Message):
     
     elif input.text:
         content = input.text.strip()
-        links = [i for i in content.split("\n") if "youtube.com" in i or "youtu.be" in i]
+        content = content.split("\n")
+            links = []
+            for i in content:
+                links.append(i.split("://", 1))
         count = 1
         arg = 1
-        if not links:
-            await m.reply_text("**No valid YouTube links found.**")
-            return
+        
     else:
         await m.reply_text("**Invalid input. Send either a .txt file or YouTube links**")
         return
@@ -418,7 +423,6 @@ async def txt_handler(bot: Client, m: Message):
                 return
             Vxy = links[i][1].replace("www.youtube-nocookie.com/embed", "youtu.be")
             url = "https://" + Vxy
-
             oembed_url = f"https://www.youtube.com/oembed?url={url}&format=json"
             response = requests.get(oembed_url)
             audio_title = response.json().get('title', 'YouTube Video')
