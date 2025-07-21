@@ -192,8 +192,8 @@ async def broadusers_handler(client: Client, message: Message):
         
 @bot.on_message(filters.command("cookies") & filters.private)
 async def cookies_handler(client: Client, m: Message):
-    await m.reply_text(
-        "Please upload the cookies file (.txt format).",
+    editable = await m.reply_text(
+        "**Please upload the YouTube Cookies file (.txt format).**",
         quote=True
     )
 
@@ -217,12 +217,14 @@ async def cookies_handler(client: Client, m: Message):
         with open(cookies_file_path, "w") as target_file:
             target_file.write(cookies_content)
 
-        await input_message.reply_text(
+        await editable.delete()
+        await input_message.delete()
+        await m.reply_text(
             "✅ Cookies updated successfully.\n📂 Saved in `youtube_cookies.txt`."
         )
 
     except Exception as e:
-        await m.reply_text(f"⚠️ An error occurred: {str(e)}")
+        await m.reply_text(f"__**Failed Reason**__\n<blockquote>{str(e)}</blockquote>")
 
 @bot.on_message(filters.command(["t2t"]))
 async def text_to_txt(client, message: Message):
@@ -371,6 +373,7 @@ async def txt_handler(bot: Client, m: Message):
     input: Message = await bot.listen(editable.chat.id)
     x = await input.download()
     file_name, ext = os.path.splitext(os.path.basename(x))
+    playlist_name = file_name.replace('_', ' ')
     try:
         with open(x, "r") as f:
             content = f.read()
@@ -393,8 +396,8 @@ async def txt_handler(bot: Client, m: Message):
     except asyncio.TimeoutError:
         raw_text = '1' 
         
-    await editable.delete()      
-    await m.reply_text(f"<blockquote><b>⏯️Playlist : {file_name}</b></blockquote>")
+    await editable.delete()
+    await m.reply_text(f"<blockquote><b>⏯️Playlist : {playlist_name}</b></blockquote>")
     count = int(raw_text)
     arg = int(raw_text)
     try:
