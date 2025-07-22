@@ -815,7 +815,7 @@ async def y2t_button(client, callback_query):
          
 @bot.on_message(filters.command(["id"]))
 async def id_command(client, message: Message):
-    keyboard = InlineKeyboardMarkup([[InlineKeyboardButton(text="Send to Owner", url=f"tg://openmessage?user_id={OWNER}")])
+    keyboard = InlineKeyboardMarkup([[InlineKeyboardButton(text="Send to Owner", url=f"tg://openmessage?user_id={OWNER}")]])
     chat_id = message.chat.id
     text = f"<blockquote expandable><b>The ID of this chat id is:</b></blockquote>\n`{chat_id}`"
     
@@ -1655,7 +1655,6 @@ def reset_and_set_commands():
         {"command": "stop", "description": "🚫 Stop the ongoing process"},
         {"command": "broadcast", "description": "📢 Broadcast to All Users"},
         {"command": "broadusers", "description": "👨‍❤️‍👨 All Broadcasting Users"},
-        {"command": "help", "description": "👨‍🏭 Help about the Bot"},
         {"command": "drm", "description": "📑 Upload .txt file"},
         {"command": "cookies", "description": "📁 Upload YT Cookies"},
         {"command": "y2t", "description": "🔪 YouTube → .txt Converter"},
