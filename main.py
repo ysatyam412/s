@@ -460,13 +460,23 @@ async def restart_handler(_, m):
 @bot.on_message(filters.command("stop") & filters.private)
 async def cancel_handler(client: Client, m: Message):
     global processing_request, cancel_requested
-    if processing_request:
-        cancel_requested = True
-        await m.delete()
-        cancel_message = await m.reply_text("**🚦 Process cancel request received. Stopping after current process...**")
+    if m.chat.id not in AUTH_USERS:
+        print(f"User ID not in AUTH_USERS", m.chat.id)
+        await bot.send_message(
+            m.chat.id, 
+            f"<blockquote>__**Oopss! You are not a Premium member**__\n"
+            f"__**PLEASE /upgrade YOUR PLAN**__\n"
+            f"__**Send me your user id for authorization**__\n"
+            f"__**Your User id** __- `{m.chat.id}`</blockquote>\n\n"
+        )
     else:
-        cancel_message = None
-        await m.reply_text("**⚡ No active process to cancel.**")
+        if processing_request:
+            cancel_requested = True
+            await m.delete()
+            cancel_message = await m.reply_text("**🚦 Process cancel request received. Stopping after current process...**")
+        else:
+            cancel_message = None
+            await m.reply_text("**⚡ No active process to cancel.**")
 
 @bot.on_message(filters.command("start"))
 async def start(bot, m: Message):
