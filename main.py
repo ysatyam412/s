@@ -1369,30 +1369,36 @@ async def text_handler(bot: Client, m: Message):
     editable = await m.reply_text(f"<pre><code>**🔹Processing your link...\n🔁Please wait...⏳**</code></pre>")
     await m.delete()
 
-    await editable.edit(f"╭━━━━❰ᴇɴᴛᴇʀ ʀᴇꜱᴏʟᴜᴛɪᴏɴ❱━━➣ \n┣━━⪼ send `144`  for 144p\n┣━━⪼ send `240`  for 240p\n┣━━⪼ send `360`  for 360p\n┣━━⪼ send `480`  for 480p\n┣━━⪼ send `720`  for 720p\n┣━━⪼ send `1080` for 1080p\n╰━━⌈⚡[`{CREDIT}`]⚡⌋━━➣ ")
-    input2: Message = await bot.listen(editable.chat.id, filters=filters.text & filters.user(m.from_user.id))
-    raw_text2 = input2.text
-    quality = f"{raw_text2}p"
-    await input2.delete(True)
-    try:
-        if raw_text2 == "144":
-            res = "256x144"
-        elif raw_text2 == "240":
-            res = "426x240"
-        elif raw_text2 == "360":
-            res = "640x360"
-        elif raw_text2 == "480":
-            res = "854x480"
-        elif raw_text2 == "720":
-            res = "1280x720"
-        elif raw_text2 == "1080":
-            res = "1920x1080" 
-        else: 
-            res = "UN"
-    except Exception:
-            res = "UN"
+    if ".pdf" in link:
+        await editable.delete()
+        raw_text2 = "360"
+        quality = "360p"
+    else:
+        await editable.edit(f"╭━━━━❰ᴇɴᴛᴇʀ ʀᴇꜱᴏʟᴜᴛɪᴏɴ❱━━➣ \n┣━━⪼ send `144`  for 144p\n┣━━⪼ send `240`  for 240p\n┣━━⪼ send `360`  for 360p\n┣━━⪼ send `480`  for 480p\n┣━━⪼ send `720`  for 720p\n┣━━⪼ send `1080` for 1080p\n╰━━⌈⚡[🦋`{CREDIT}`🦋]⚡⌋━━➣ ")
+        input2: Message = await bot.listen(editable.chat.id, filters=filters.text & filters.user(m.from_user.id))
+        raw_text2 = input2.text
+        quality = f"{raw_text2}p"
+        await input2.delete(True)
+        try:
+            if raw_text2 == "144":
+                res = "256x144"
+            elif raw_text2 == "240":
+                res = "426x240"
+            elif raw_text2 == "360":
+                res = "640x360"
+            elif raw_text2 == "480":
+                res = "854x480"
+            elif raw_text2 == "720":
+                res = "1280x720"
+            elif raw_text2 == "1080":
+                res = "1920x1080" 
+            else: 
+                res = "UN"
+        except Exception:
+                res = "UN"
           
-    await editable.delete()
+        await editable.delete()
+        
     raw_text4 = "working_token"
     thumb = "/d"
     count =0
@@ -1410,7 +1416,7 @@ async def text_handler(bot: Client, m: Message):
                 name = f'{audio_title[:60]}'        
                 name1 = f'{audio_title}'
             else:
-                name1 = links.replace("(", "[").replace(")", "]").replace("_", "").replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("https", "").replace("http", "").strip()
+                name1 = links.replace("(", "[").replace(")", "]").replace("_", " ").replace("\t", "").replace(":", " ").replace("/", " ").replace("+", " ").replace("#", " ").replace("|", " ").replace("@", " ").replace("*", " ").replace(".", " ").replace("https", "").replace("http", "").strip()
                 name = f'{name1[:60]}'
             
             if "visionias" in url:
@@ -1487,11 +1493,8 @@ async def text_handler(bot: Client, m: Message):
                 cmd = f'yt-dlp -f "{ytf}" "{url}" -o "{name}.mp4"'
 
             try:
-                if "youtu" in url:
-                    cc = f'🎞️𝐓𝐢𝐭𝐥𝐞 » `{name} [{res}].mp4`\n<blockquote>🔗𝐋𝐢𝐧𝐤 » {link}</blockquote>\n🌟𝐄𝐱𝐭𝐫𝐚𝐜𝐭𝐞𝐝 𝐁𝐲 » {CREDIT}'
-                else:
-                    cc = f'🎞️𝐓𝐢𝐭𝐥𝐞 » `{name} [{res}].mp4`\n\n🌟𝐄𝐱𝐭𝐫𝐚𝐜𝐭𝐞𝐝 𝐁𝐲 » {CREDIT}'
-                cc1 = f'📕𝐓𝐢𝐭𝐥𝐞 » `{name}`\n\n🌟𝐄𝐱𝐭𝐫𝐚𝐜𝐭𝐞𝐝 𝐁𝐲 » {CREDIT}'
+                cc = f'🎞️ `{name} [{res}].mp4`\n<blockquote expandable>🔗𝐋𝐢𝐧𝐤 » {link}</blockquote>\n🌟𝐄𝐱𝐭𝐫𝐚𝐜𝐭𝐞𝐝 𝐁𝐲 » {CREDIT}'
+                cc1 = f'📕 `{name}`\n<blockquote expandable>🔗𝐋𝐢𝐧𝐤 » [Click Here to Open]({link})</blockquote>\n\n🌟𝐄𝐱𝐭𝐫𝐚𝐜𝐭𝐞𝐝 𝐁𝐲 » {CREDIT}'
                   
                 if "drive" in url:
                     try:
