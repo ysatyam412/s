@@ -1093,7 +1093,7 @@ async def txt_handler(bot: Client, m: Message):
 
             elif "classplusapp" in url:
                 signed_api = f"https://cpapi-rjbs.onrender.com/extract_keys?url={url}@bots_updatee"
-                response = requests.get(signed_api, timeout=10)
+                response = requests.get(signed_api, timeout=20)
                 #url = response.text.strip()
                 url = response.json()['url']  
                 
@@ -1375,7 +1375,7 @@ async def text_handler(bot: Client, m: Message):
     editable = await m.reply_text(f"<pre><code>**🔹Processing your link...\n🔁Please wait...⏳**</code></pre>")
     await m.delete()
 
-    if ".pdf" in link:
+    if ".pdf" in link or ".jpeg" in link or ".jpg" in link or ".png" in link:
         await editable.delete()
         raw_text2 = "360"
         quality = "360p"
@@ -1450,7 +1450,7 @@ async def text_handler(bot: Client, m: Message):
 
             elif "classplusapp" in url:
                 signed_api = f"https://cpapi-rjbs.onrender.com/extract_keys?url={url}@bots_updatee"
-                response = requests.get(signed_api, timeout=10)
+                response = requests.get(signed_api, timeout=20)
                 #url = response.text.strip()
                 url = response.json()['url']  
 
