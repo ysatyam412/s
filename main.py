@@ -815,8 +815,9 @@ async def y2t_button(client, callback_query):
          
 @bot.on_message(filters.command(["id"]))
 async def id_command(client, message: Message):
+    keyboard = InlineKeyboardMarkup([[InlineKeyboardButton(text="Send to Owner", url=f"tg://openmessage?user_id={OWNER}")])
     chat_id = message.chat.id
-    await message.reply_text(f"<blockquote>The ID of this chat id is:</blockquote>\n`{chat_id}`")
+    await message.reply_text(f"<blockquote>The ID of this chat id is:</blockquote>\n`{chat_id}`", reply_markup=keyboard)
 
 @bot.on_message(filters.private & filters.command(["info"]))
 async def info(bot: Client, update: Message):
