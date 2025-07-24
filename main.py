@@ -532,13 +532,13 @@ async def start(bot, m: Message):
         await start_message.edit_text(
             f"🌟 Welcome {m.from_user.first_name}! 🌟\n\n" +
             f"Great! You are a premium member!\n"
-            f"Use button : **🕸️ Commands** to get started 🌟\n\n"
+            f"Use button : **✨ Commands** to get started 🌟\n\n"
             f"If you face any problem contact -  [{CREDIT}⁬](tg://openmessage?user_id={OWNER})\n", disable_web_page_preview=True, reply_markup=keyboard
         )
     else:
         await asyncio.sleep(2)
         keyboard = InlineKeyboardMarkup([
-            [InlineKeyboardButton("💎 Features", callback_data="feat_command"), InlineKeyboardButton("🕸️ Commands", callback_data="cmd_command")],
+            [InlineKeyboardButton("💎 Features", callback_data="feat_command"), InlineKeyboardButton("✨ Commands", callback_data="cmd_command")],
             [InlineKeyboardButton("💳 Plans", callback_data="upgrade_command")],
             [InlineKeyboardButton(text="📞 Contact", url=f"tg://openmessage?user_id={OWNER}"), InlineKeyboardButton(text="🛠️ Repo", url="https://github.com/nikhilsainiop/saini-txt-direct")],
         ])
@@ -553,7 +553,7 @@ async def back_to_main_menu(client, callback_query):
     first_name = callback_query.from_user.first_name
     caption = f"✨ **Welcome [{first_name}](tg://user?id={user_id}) in My uploader bot**"
     keyboard = InlineKeyboardMarkup([
-            [InlineKeyboardButton("💎 Features", callback_data="feat_command"), InlineKeyboardButton("🖱️Commands", callback_data="cmd_command")],
+            [InlineKeyboardButton("💎 Features", callback_data="feat_command"), InlineKeyboardButton("✨ Commands", callback_data="cmd_command")],
             [InlineKeyboardButton("💳 Plans", callback_data="upgrade_command")],
             [InlineKeyboardButton(text="📞 Contact", url=f"tg://openmessage?user_id={OWNER}"), InlineKeyboardButton(text="🛠️ Repo", url="https://github.com/nikhilsainiop/saini-txt-direct")],
         ])
